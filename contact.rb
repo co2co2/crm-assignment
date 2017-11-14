@@ -19,7 +19,3 @@ class Contact < ActiveRecord::Base
 end
 
 Contact.auto_upgrade!
-
-at_exit do
-  ActiveRecord::Base.connection.close
-end

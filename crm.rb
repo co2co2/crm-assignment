@@ -58,37 +58,50 @@ class CRM
   end
 
   def modify_existing_contact
-    puts 'Please enter the id of the contact you want to modify.'
+    puts "Please enter the id of the contact you want to modify."
     id = gets.chomp
-    puts "first_name \n last_name \n email \n note to edit?"
-    selector = gets.chomp
-    puts "input the update."
-    input = gets.chomp
-    Contact.update(id, selector, input)
+    puts "enter first_name/last_name/email/note "
+    key = gets.chomp
+    puts "insert the new info ."
+    value = gets.chomp
+    edit_item = Contact.find_by_id(id)
+    edit_item.update({key=>value} )
+    puts "#{edit_item.inspect}saved."
   end
 
 
 
   def delete_contact
-    print 'Please entre the id of the contact you want to delete.'
-    id = gets.chomp
-    Contact.delete
+    puts 'Please entre the id of the contact you want to delete.'
+    id = gets.chomp.to_i
+    f= Contact.find_by_id(id)
+    puts "#{f.inspect}going to be deleted."
+    Contact.delete(f)
+
   end
 
   def display_all_contacts
-    print Contact.all
+    puts Contact.all.inspect
   end
 
   def search_by_attribute
-    print Contact.find_by
+   puts "you like to search by first_name/last_name or email"
+   key = gets.chomp
+   puts "please entre the word for searcing."
+   value = gets.chomp
+   target = Contact.find_by({key=>value})
+   puts "#{target.inspect}"
   end
 
-  def find_by_id(id)
-    Contact.find(id)
+  def exit
+    abort "bye~"
   end
 
 
 end
-crm = CRM.new("bobo")
-
+crm = CRM.new("coco")
 crm.main_menu
+
+at_exit do
+  ActiveRecord::Base.connection.close
+end
